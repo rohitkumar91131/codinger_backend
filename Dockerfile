@@ -17,9 +17,7 @@ RUN apt-get update && apt-get install -y \
     && a2enmod rewrite
 
 # Set Apache document root to CodeIgniter's public folder
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf \
-    && sed -ri -e 's!/var/www/!/var/www/html/public!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
 # Copy app files
 COPY . /var/www/html
@@ -34,10 +32,9 @@ COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Expose port
+# Expose port (Render expects process to bind $PORT)
 EXPOSE 8080
 
 ENV CI_ENVIRONMENT=production
 
 CMD ["apache2-foreground"]
-
