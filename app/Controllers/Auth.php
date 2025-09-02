@@ -81,7 +81,7 @@ class Auth extends ResourceController {
         try {
             $users = $model->findAll();
             foreach ($users as &$user) {
-                unset($user['password']); // remove password from response
+                unset($user['password']); 
             }
             return $this->respond(['users' => $users]);
         } catch (\Exception $e) {
