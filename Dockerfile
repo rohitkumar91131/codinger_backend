@@ -1,16 +1,18 @@
-# आधिकारिक PHP इमेज का उपयोग Apache के साथ करें
 FROM php:8.1-apache
 
-# Apache के लिए `mod_rewrite` को इनेबल करें, जो CodeIgniter के लिए ज़रूरी है
 RUN a2enmod rewrite
 
-# अपनी प्रोजेक्ट फ़ाइलों को Apache के डिफ़ॉल्ट वेब रूट में कॉपी करें
-COPY . /var/www/html/
+# Copy the custom Apache configuration file into the container
+COPY 000-default.conf /etc/apache2/sites-available/
 
-# `writable` डायरेक्टरी के लिए सही अनुमतियाँ (permissions) सेट करें
+# Enable the new configuration and disable the old one
+RUN a2ensite 000-default.conf
+RUN a2dissite 000-default.conf
+
+# Copy project files and set permissions
+COPY . /var/www/html/
 RUN chown -R www-data:www-data /var/www/html/writable
 RUN chmod -R 755 /var/www/html/writable
 
-# Apache के लिए पोर्ट 80 को एक्सपोज़ करें
 EXPOSE 80
 
