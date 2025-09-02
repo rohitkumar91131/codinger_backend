@@ -1,22 +1,40 @@
-# Official PHP image with Apache
-FROM php:8.1-apache
+# Use official PHP image with Apache
+FROM php:8.2-apache
 
-# Enable mod_rewrite for CodeIgniter's .htaccess
+# Set working directory
+WORKDIR /var/www/html
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    git \
+    && docker-php-ext-install pdo pdo_pgsql pdo_mysql zip
+
+# Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
-# Copy and overwrite the default Apache virtual host configuration
-COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+# Copy application code
+COPY . /var/www/html
 
-# Re-enable the configuration (though it's already there) to ensure it's active
-RUN a2ensite 000-default.conf
+# Set permissions for CodeIgniter writable folders
+RUN chown -R www-data:www-data /var/www/html/writable \
+    && chmod -R 775 /var/www/html/writable
 
-# Copy project files into the Apache web root
-COPY . /var/www/html/
+# Install Composer
+COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 
-# Set permissions for the writable directory
-RUN chown -R www-data:www-data /var/www/html/writable
-RUN chmod -R 755 /var/www/html/writable
+# Install PHP dependencies via Composer
+RUN composer install --no-dev --optimize-autoloader
 
-# Expose port 80
-EXPOSE 80
+# Expose port 8080 (Render default)
+EXPOSE 8080
+
+# Set environment variable for CodeIgniter
+ENV CI_ENVIRONMENT=production
+
+# Start Apache in foreground
+CMD ["apache2-foreground"]
 
