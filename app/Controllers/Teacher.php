@@ -11,39 +11,67 @@ class Teacher extends ResourceController
     public function index()
     {
         $teachers = $this->model->findAll();
-        return $this->respond($teachers);
+        return $this->respond([
+            'success' => true,
+            'teachers' => $teachers
+        ]);
+    }
+
+    public function show($id = null)
+    {
+        if (!$id) {
+            return $this->respond([
+                'success' => false,
+                'error' => 'Teacher ID is required'
+            ], 400);
+        }
+
+        $teacher = $this->model->find($id);
+        if (!$teacher) {
+            return $this->respond([
+                'success' => false,
+                'error' => 'Teacher not found'
+            ], 404);
+        }
+
+        return $this->respond([
+            'success' => true,
+            'teacher' => $teacher
+        ]);
     }
 
     public function update($id = null)
     {
-        $data = $this->request->getJSON();
-
-        if(!$id) {
-            return $this->fail("Teacher ID is required");
+        if (!$id) {
+            return $this->respond([
+                'success' => false,
+                'error' => 'Teacher ID is required'
+            ], 400);
         }
 
         $teacher = $this->model->find($id);
-        if(!$teacher) {
-            return $this->failNotFound("Teacher not found");
+        if (!$teacher) {
+            return $this->respond([
+                'success' => false,
+                'error' => 'Teacher not found'
+            ], 404);
         }
 
+        $data = $this->request->getJSON();
         $updateData = [
             'user_id' => $data->user_id ?? $teacher['user_id'],
             'name' => $data->name ?? $teacher['name'],
             'subject' => $data->subject ?? $teacher['subject'],
+            'university_name' => $data->university_name ?? $teacher['university_name'],
+            'gender' => $data->gender ?? $teacher['gender'],
+            'year_joined' => $data->year_joined ?? $teacher['year_joined']
         ];
 
         $this->model->update($id, $updateData);
-        return $this->respondUpdated($this->model->find($id));
-    }
 
-
-    public function show($id = null)
-    {
-        $teacher = $this->model->find($id);
-        if(!$teacher) {
-            return $this->failNotFound("Teacher not found");
-        }
-        return $this->respond($teacher);
+        return $this->respond([
+            'success' => true,
+            'teacher' => $this->model->find($id)
+        ]);
     }
 }
