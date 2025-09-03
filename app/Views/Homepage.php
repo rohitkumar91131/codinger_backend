@@ -50,6 +50,43 @@
         </div>
     </div>
 
+    <!-- Users Table -->
+    <div class="card shadow-sm mb-5">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">Users</h5>
+        </div>
+        <div class="card-body">
+            <?php
+            // Fetch users via Auth controller
+            $users = (new \App\Controllers\Auth())->sendAllUser();
+            ?>
+            <?php if (!empty($users)): ?>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($users as $u): ?>
+                            <tr>
+                                <td><?= $u['id'] ?></td>
+                                <td><?= $u['first_name'] . ' ' . $u['last_name'] ?></td>
+                                <td><?= $u['email'] ?></td>
+                                <td><?= $u['role'] ?? 'N/A' ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <p class="text-muted">No users found.</p>
+            <?php endif; ?>
+        </div>
+    </div>
+
 </div>
 
 <footer class="bg-dark text-white text-center py-3">
