@@ -25,11 +25,11 @@ class Database extends Config
      * @var array<string, mixed>
      */
     public array $default = [
-        'DSN'          => '',
-        'hostname'     => 'pg-3543ff12-rk34190100-6afc.b.aivencloud.com',
-        'username'     => 'avnadmin',
-        'password'     => 'AVNS_vQ-s59M8EONxOmCb7ln',
-        'database'     => 'defaultdb',
+        'DSN'          => 'pgsql:host=dpg-d2rf1m2dbo4c73d8h2j0-a.singapore-postgres.render.com;port=5432;dbname=codinger;user=root;password=gwJh5MkB19XcNBZzO9cIL2RCxbdhhhr5;sslmode=require',
+        'hostname'     => '',
+        'username'     => '',
+        'password'     => '',
+        'database'     => '',
         'DBDriver'     => 'Postgre',
         'DBPrefix'     => '',
         'pConnect'     => false,
@@ -41,7 +41,7 @@ class Database extends Config
         'compress'     => false,
         'strictOn'     => false,
         'failover'     => [],
-        'port'         => 18166,
+        'port'         => 5432,
         'numberNative' => false,
         'foundRows'    => false,
         'dateFormat'   => [
@@ -50,6 +50,8 @@ class Database extends Config
             'time'     => 'H:i:s',
         ],
     ];
+
+    
 
     //    /**
     //     * Sample database connection for SQLite3.
