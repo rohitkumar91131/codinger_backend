@@ -8,6 +8,8 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
+        $this->db->table('auth_user')->truncate();
+
         $data = [
             ['first_name'=>'Rohit','last_name'=>'Kumar','email'=>'rohit1@example.com','password'=>password_hash('pass123', PASSWORD_BCRYPT)],
             ['first_name'=>'Anita','last_name'=>'Sharma','email'=>'anita2@example.com','password'=>password_hash('pass123', PASSWORD_BCRYPT)],
