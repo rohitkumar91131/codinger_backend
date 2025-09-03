@@ -25,32 +25,28 @@ class Database extends Config
      * @var array<string, mixed>
      */
     public array $default = [
-        'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => '',
-        'password'     => '',
-        'database'     => '',
-        'DBDriver'     => 'MySQLi',
-        'DBPrefix'     => '',
-        'pConnect'     => false,
-        'DBDebug'      => true,
-        'charset'      => 'utf8mb4',
-        'DBCollat'     => 'utf8mb4_general_ci',
-        'swapPre'      => '',
-        'encrypt'      => false,
-        'compress'     => false,
-        'strictOn'     => false,
-        'failover'     => [],
-        'port'         => 3306,
-        'numberNative' => false,
-        'foundRows'    => false,
-        'dateFormat'   => [
+        'DSN'        => '',
+        'hostname'   => 'dpg-d2rf1m2dbo4c73d8h2j0-a',  // Render internal host
+        'username'   => 'root',                          // From your Render URL
+        'password'   => 'gwJh5MkB19XcNBZzO9cIL2RCxbdhhhr5',
+        'database'   => 'codinger',
+        'DBDriver'   => 'Postgre',
+        'DBPrefix'   => '',
+        'pConnect'   => false,
+        'DBDebug'    => (ENVIRONMENT !== 'production'),
+        'charset'    => 'utf8',
+        'swapPre'    => '',
+        'failover'   => [],
+        'port'       => 5432,
+        'schema'     => 'public',
+        'sslmode'    => 'require',                       // Render requires SSL
+        'dateFormat' => [
             'date'     => 'Y-m-d',
             'datetime' => 'Y-m-d H:i:s',
             'time'     => 'H:i:s',
         ],
     ];
-
+    
     //    /**
     //     * Sample database connection for SQLite3.
     //     *
