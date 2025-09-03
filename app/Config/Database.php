@@ -10,19 +10,19 @@ class Database extends Config
     public string $defaultGroup = 'default';
 
     public array $default = [
-        'DSN'        => '',
-        'hostname'   => 'dpg-d2rf1m2dbo4c73d8h2j0-a', // Render internal host
-        'username'   => 'root',                         // From Render URL
-        'password'   => 'gwJh5MkB19XcNBZzO9cIL2RCxbdhhhr5',
-        'database'   => 'codinger',
+        'DSN'        => getenv('DATABASE_DSN'),
+        'hostname'   => getenv('DATABASE_HOST'),
+        'username'   => getenv('DATABASE_USER'),
+        'password'   => getenv('DATABASE_PASS'),
+        'database'   => getenv('DATABASE_NAME'),
         'DBDriver'   => 'Postgre',
         'DBPrefix'   => '',
         'pConnect'   => false,
         'DBDebug'    => (ENVIRONMENT !== 'production'),
         'charset'    => 'utf8',
-        'port'       => 5432,
+        'port'       => getenv('DATABASE_PORT') ?: 5432,
         'schema'     => 'public',
-        'sslmode'    => 'require',                       // Render requires SSL
+        'sslmode'    => 'require',
         'dateFormat' => [
             'date'     => 'Y-m-d',
             'datetime' => 'Y-m-d H:i:s',
@@ -47,7 +47,6 @@ class Database extends Config
     public function __construct()
     {
         parent::__construct();
-
         if (ENVIRONMENT === 'testing') {
             $this->defaultGroup = 'tests';
         }

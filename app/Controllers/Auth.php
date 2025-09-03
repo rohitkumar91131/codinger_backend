@@ -14,6 +14,20 @@ class Auth extends ResourceController {
         $this->db = \Config\Database::connect(); // Connect to PostgreSQL
     }
 
+    // 🔹 New method to check DB connection
+    public function checkConnection()
+    {
+        try {
+            if ($this->db->connID) {
+                return $this->respond(['success' => true, 'message' => 'Database connection is working!']);
+            } else {
+                return $this->respond(['success' => false, 'message' => 'Database connection failed!'], 500);
+            }
+        } catch (\Exception $e) {
+            return $this->respond(['success' => false, 'error' => 'Connection error: ' . $e->getMessage()], 500);
+        }
+    }
+
     public function register()
     {
         $model = new UserModel($this->db);
